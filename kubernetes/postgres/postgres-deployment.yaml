@@ -1,0 +1,50 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hack-postgres
+spec:
+  selector:
+    matchLabels:
+      app: hack-postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hack-postgres
+    spec:
+      containers:
+      - name: hack-postgres
+        image: postgres:13
+        imagePullPolicy: "IfNotPresent"
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "512m"
+        ports:
+        - containerPort: 5432
+        env:
+          - name: POSTGRES_DB
+            value: hackdb
+          - name: POSTGRES_USER
+            value: hackuser
+          - name: POSTGRES_PASSWORD
+            value: hackpass
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: hack-postgresdb
+      volumes:
+      - name: hack-postgresdb
+        persistentVolumeClaim:
+          claimName: hack-postgres-pvc
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: hack-postgres-svc
+spec:
+  selector:
+    app: hack-postgres
+  ports:
+  - port: 5432
+  type: ClusterIP

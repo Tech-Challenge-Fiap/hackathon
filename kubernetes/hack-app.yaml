@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hack-app
+spec:
+  selector:
+    matchLabels:
+      app: hack-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hack-app
+    spec:
+      containers:
+      - name: hack-app
+        image: barbosaleandro/hackathon:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        ports:
+          - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            path: /ping/
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: /ping/
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 60
+        startupProbe:
+          httpGet:
+            path: /ping/
+            port: 8000
+          failureThreshold: 3
+          periodSeconds: 30
+        env:
+          - name: POSTGRES_DB_NAME
+            value: hackdb
+          - name: POSTGRES_DB_USER
+            value: hackuser
+          - name: POSTGRES_DB_PASSWORD
+            value: hackpass
+          - name: POSTGRES_DB_HOST
+            value: fiaphack-db.cdgs0qagmcuo.us-east-2.rds.amazonaws.com
+          - name: POSTGRES_DB_PORT
+            value: '5432'
+          - name: DEBUG
+            value: '0'
