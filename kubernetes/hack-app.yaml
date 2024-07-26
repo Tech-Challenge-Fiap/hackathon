@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: hack-app
-        image: barbosaleandro/hackathon:latest
+        image: VAL_DOCKER_IMAGE
         resources:
           limits:
             memory: "512Mi"
@@ -41,14 +41,14 @@ spec:
           periodSeconds: 30
         env:
           - name: POSTGRES_DB_NAME
-            value: hackdb
+            value: VAL_POSTGRES_DB_NAME
           - name: POSTGRES_DB_USER
-            value: hackuser
+            value: VAL_POSTGRES_DB_USER
           - name: POSTGRES_DB_PASSWORD
-            value: hackpass
+            value: VAL_POSTGRES_DB_PASSWORD
           - name: POSTGRES_DB_HOST
-            value: fiaphack-db.cdgs0qagmcuo.us-east-2.rds.amazonaws.com
+            value: VAL_POSTGRES_DB_HOST
           - name: POSTGRES_DB_PORT
-            value: '5432'
+            value: VAL_POSTGRES_DB_PORT
           - name: DEBUG
             value: '0'
