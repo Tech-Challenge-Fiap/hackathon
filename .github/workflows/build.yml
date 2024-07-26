@@ -97,7 +97,7 @@ jobs:
         sed -i.bak "s,VAL_POSTGRES_DB_USER,${{secrets.DB_USER}}," kubernetes/hack-app.yaml
         sed -i.bak "s,VAL_POSTGRES_DB_PASSWORD,${{secrets.DB_PASS}}," kubernetes/hack-app.yaml
         sed -i.bak "s,VAL_POSTGRES_DB_HOST,${{secrets.DB_HOST}}," kubernetes/hack-app.yaml
-        sed -i.bak "s,VAL_POSTGRES_DB_PORT,${{secrets.DB_PORT}}," kubernetes/hack-app.yaml
+        sed -i.bak "s,VAL_POSTGRES_DB_PORT,'${{secrets.DB_PORT}}'," kubernetes/hack-app.yaml
         kubectl apply -f kubernetes/hack-app.yaml
         kubectl apply -f kubernetes/hack-svc.yaml
         kubectl apply -f kubernetes/metrics.yaml
